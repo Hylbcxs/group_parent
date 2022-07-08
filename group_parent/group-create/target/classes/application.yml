@@ -1,0 +1,21 @@
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates
+    encoding: UTF-8 #编码
+    suffix: .html #模板后缀
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 12345678
+
+
+server:
+  port: 8201
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰匹配
+#静态资源配置
+resources:
+  static-locations: classpath:static/

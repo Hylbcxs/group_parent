@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="group-login" />
+        <module name="group-com" />
+        <module name="group-create" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="group-activity" target="8" />
+      <module name="group-common" target="8" />
+      <module name="group-gateway" target="1.7" />
+      <module name="group-join" target="1.7" />
+      <module name="group-pin" target="8" />
+      <module name="service" target="8" />
+      <module name="service_login" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="group-activity" options="-parameters" />
+      <module name="group-com" options="-parameters" />
+      <module name="group-common" options="-parameters" />
+      <module name="group-create" options="-parameters" />
+      <module name="group-gateway" options="-parameters" />
+      <module name="group-join" options="-parameters" />
+      <module name="group-login" options="-parameters" />
+      <module name="group-pin" options="" />
+      <module name="service" options="-parameters" />
+      <module name="service_login" options="-parameters" />
+    </option>
+  </component>
+</project>

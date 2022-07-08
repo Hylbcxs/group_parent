@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>已加入的团队</title>
+  <link th:href="@{/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script th:src="@{/js/jquery-3.3.1.js}"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script th:src="@{/bootstrap-3.4.1-dist/js/bootstrap.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation"th:fragment="top">
+  <div class="container-fluid" >
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">首页</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            个人信息
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a th:href="@{'/activity/findinformation?head='+${session.username}}">查看个人信息</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            我是团长
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a th:href="@{'/activity/findAll?head='+${session.username}}">我创建的团队</a>
+            </li>
+            <li>
+              <a th:href="@{'/activity/check?head='+${session.username}}">团员审核</a>
+            </li>
+            <li>
+              <a th:href="@{'/activity/toconfirmpage?head='+${session.username}}">已成立的活动</a>
+            </li>
+            <!--                        <li>-->
+            <!--                            <security:authorize access="hasRole('admin')">-->
+            <!--                                <a href="${pageContext.request.contextPath}/role/findAll">角色管理</a>-->
+            <!--                            </security:authorize>-->
+            <!--                        </li>-->
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            我是团员
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a th:href="@{'/join/alreadyjoin?username='+${session.username}}">已加入的团队</a></li>
+            <li><a th:href="@{/join/findAll}">加入其他团队</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"> <span class="glyphicon glyphicon-edit"></span>修改密码</a></li>
+      <li><a th:href="@{/group/tologinpage}"><span class="glyphicon glyphicon-trash"></span>注销</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span th:text="${session.username}"></span></a> </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h3 align="center">已加入的团队</h3>
+  <div style="float:right;margin: 5px;">
+    <div class="btn-group">
+      <a th:href="@{/join/toadddepricepage}"class="btn btn-default btn-sm" >自主追加费用</a>&nbsp;
+    </div>
+  </div>
+  <form id="form" method="post">
+    <table border="1" class="table table-bordered table-hover">
+      <tr class="success">
+        <th><input type="checkbox" id="firstCb"></th>
+        <th>活动名称</th>
+        <th>活动时间</th>
+        <th>活动起点</th>
+        <th>活动内容</th>
+        <th>团费</th>
+        <th>操作</th>
+      </tr>
+      <tr th:each="activity:${activities}">
+        <td>
+          <input name="ids" type="checkbox" value="${activity.id}">
+        </td>
+        <td th:text="${activities.activityname}"></td>
+        <td th:text="${activities.time}"></td>
+        <td th:text="${activities.startplace}"></td>
+        <td th:text="${activities.content}"></td>
+        <td th:text="${activities.price}"></td>
+        <td><a th:href="@{'/join/export?username='+${session.username}+'&activityname='+${activities.activityname}}" onclick="" class="btn btn-default btn-sm" >输出账单</a>&nbsp;
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

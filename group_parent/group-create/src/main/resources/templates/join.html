@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>申请加入团队</title>
+    <link th:href="@{/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script th:src="@{/js/jquery-3.3.1.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/bootstrap-3.4.1-dist/js/bootstrap.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">首页</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            个人信息
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a th:href="@{'/activity/findinformation?head='+${session.username}}">查看个人信息</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            我是团长
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a th:href="@{'/activity/findAll?head='+${session.username}}">我创建的团队</a>
+            </li>
+            <li>
+              <a th:href="@{'/activity/check?head='+${session.username}}">团员审核</a>
+            </li>
+            <li>
+              <a th:href="@{'/activity/toconfirmpage?head='+${session.username}}">已成立的活动</a>
+            </li>
+            <!--                        <li>-->
+            <!--                            <security:authorize access="hasRole('admin')">-->
+            <!--                                <a href="${pageContext.request.contextPath}/role/findAll">角色管理</a>-->
+            <!--                            </security:authorize>-->
+            <!--                        </li>-->
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            我是团员
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a th:href="@{'/join/alreadyjoin?username='+${session.username}}">已加入的团队</a></li>
+            <li><a th:href="@{http://localhost:8201/join/findAll}">加入其他团队</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-edit"></span>修改密码</a></li>
+      <li><a th:href="@{/group/tologinpage}"><span class="glyphicon glyphicon-trash"></span>注销</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span th:text="${session.username}"></span></a> </li>
+      <!--            <li><a href="#"><span class="glyphicon glyphicon-user"></span><security:authentication property="principal.username"></security:authentication></a></li>-->
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <form th:action="@{/join/add}" method="post">
+    <section class="content">
+      <div class="panel panel-default">
+        <div class="panel-heading">活动信息</div>
+        <div class="row data-type">
+
+          <div class="col-md-2 title">ID</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="oid"
+                   placeholder="请输入ID" value="">
+          </div>
+          <div class="col-md-2 title">用户名</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="username"
+                   placeholder="请输入用户名" value="">
+          </div>
+
+          <div class="col-md-2 title">活动ID</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="id"
+                   placeholder="请输入活动ID" th:value="*{activity.id}">
+          </div>
+          <div class="col-md-2 title">活动名称</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="activityname"
+                   placeholder="请输入活动名称" th:value="*{activity.activityname}">
+          </div>
+          <div class="col-md-2 title">活动团费</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="tprice"
+                   placeholder="请输入活动团费" th:value="*{activity.price}">
+          </div>
+          <div class="col-md-2 title">参加人数</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="num"
+                   placeholder="请输入参加人数" value="1">
+          </div>
+          <div class="col-md-2 title">团长</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="head"
+                   placeholder="请输入用户名" th:value="*{activity.head}">
+          </div>
+          <div class="col-md-2 title">现有人数</div>
+          <div class="col-md-4 data">
+            <input type="text" class="form-control" name="number" th:value="*{number}">
+          </div>
+        </div>
+      </div>
+
+      <div class="box-tools text-center">
+        <button type="submit" class="btn bg-maroon">保存</button>
+        <button type="button" class="btn bg-default"
+                onclick="history.back(-1);">返回</button>
+      </div>
+      <!--工具栏/--> </section>
+  </form>
+</div>
+</body>
+</html>

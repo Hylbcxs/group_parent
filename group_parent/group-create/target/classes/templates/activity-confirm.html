@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>已成立的活动</title>
+    <link th:href="@{/bootstrap-3.4.1-dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script th:src="@{/js/jquery-3.3.1.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/bootstrap-3.4.1-dist/js/bootstrap.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">首页</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        个人信息
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{'/activity/findinformation?head='+${session.username}}">查看个人信息</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        我是团长
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{'/activity/findAll?head='+${session.username}}">我创建的团队</a>
+                        </li>
+                        <li>
+                            <a th:href="@{'/activity/check?head='+${session.username}}">团员审核</a>
+                        </li>
+                        <li>
+                            <a th:href="@{'/activity/toconfirmpage?head='+${session.username}}">已成立的活动</a>
+                        </li>
+                        <!--                        <li>-->
+                        <!--                            <security:authorize access="hasRole('admin')">-->
+                        <!--                                <a href="${pageContext.request.contextPath}/role/findAll">角色管理</a>-->
+                        <!--                            </security:authorize>-->
+                        <!--                        </li>-->
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        我是团员
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{'/join/alreadyjoin?username='+${session.username}}">已加入的团队</a></li>
+                        <li><a th:href="@{http://localhost:8201/join/findAll}">加入其他团队</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-edit"></span>修改密码</a></li>
+            <li><a th:href="@{/group/tologinpage}"><span class="glyphicon glyphicon-trash"></span>注销</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span th:text="${session.username}"></span></a> </li>
+            <!--            <li><a href="#"><span class="glyphicon glyphicon-user"></span><security:authentication property="principal.username"></security:authentication></a></li>-->
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h3 align="center">已成立的活动列表</h3>
+    <div style="float:left;">
+        <form class="form-inline" action="#" method="post">
+            <div class="form-group">
+                <label for="exampleInputName2">活动名称</label>
+                <input type="text" name="gname" class="form-control" id="exampleInputName2" placeholder="请输入活动名称">
+            </div>
+            <button type="submit" class="btn btn-default">查询</button>
+
+        </form>
+    </div>
+    <div style="float:right;margin: 5px;">
+        <div class="btn-group">
+            <a href="activity/toaddpage" th:href="@{/activity/toaddpage}"class="btn btn-default btn-sm" >创建团队</a>&nbsp;
+
+        </div>
+
+    </div>
+    <form id="form" method="post">
+        <table border="1" class="table table-bordered table-hover">
+            <tr class="success">
+                <th><input type="checkbox" id="firstCb"></th>
+                <th>活动编号</th>
+                <th>活动名称</th>
+                <th>活动时间</th>
+                <th>活动起点</th>
+                <th>活动内容</th>
+                <th>人数</th>
+                <th>团费</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="activity:${allconfirmlist}">
+                <td>
+                    <input name="ids" type="checkbox" value="${activity.id}">
+                </td>
+                <td th:text="${activity.id}"></td>
+                <td th:text="${activity.activityname}"></td>
+                <td th:text="${activity.time}"></td>
+                <td th:text="${activity.startplace}"></td>
+                <td th:text="${activity.content}"></td>
+                <td th:text="${activity.number}"></td>
+                <td th:text="${activity.price}"></td>
+                <td><a th:href="@{'/activity/details?activityname='+${activity.activityname}}" onclick="" class="btn btn-default btn-sm" >详情</a>&nbsp;
+                    <a th:href="@{'/activity/toaddpricepage?activityname='+${activity.activityname}}" onclick="" class="btn btn-default btn-sm">追加费用</a>
+                    <a href="#" onclick="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#teamModal">生成活动报告</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form  method="post" class="form-horizontal" role="form" name="team_Form">
+        <div class="modal fade" id="teamModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="height: 350px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="addModalLabel">
+                            活动报告
+                        </h4>
+                    </div>
+                    <!-- 模态框body -->
+                    <div class="modal-body" style="height: 100%;">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">活动名称</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">活动时间</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">活动起点</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="cation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">总人数</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="num">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">活动内容</label>
+                            <div class="col-sm-7">
+                                <textarea class="form-control" rows="3" style="width: 250px" id="context"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">团费(元/人)</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="price">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--模态框底部-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="add_close">关闭</button>
+                        <input type="submit" class="btn btn-primary" id="add_submit" value="打印" />
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
